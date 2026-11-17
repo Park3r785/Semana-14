@@ -5,6 +5,7 @@ import time
 PI_REAL = 3.14159
 
 
+# ALGORITMO MONTE CARLO
 def monte_carlo(N):
     puntos_dentro = 0
 
@@ -27,6 +28,7 @@ def monte_carlo(N):
     return pi_estimado, diferencia, tiempo
 
 
+# ALGORITMO LAS VEGAS
 def las_vegas(K):
     puntos_dentro = 0
     total_puntos = 0
@@ -52,28 +54,50 @@ def las_vegas(K):
     return pi_estimado, diferencia, tiempo, total_puntos
 
 
-valores_N = [1000, 10000, 100000, 500000]
-valores_K = [1000, 10000, 100000, 500000]
+# COMPARACION DE AMBOS ALGORITMOS
+valores = [1000, 10000, 100000, 500000]
 
-print("\n========== MONTE CARLO ==========")
+print("=" * 75)
+print("          COMPARACION MONTE CARLO VS LAS VEGAS")
+print("=" * 75)
 
-for N in valores_N:
-    pi, diferencia, tiempo = monte_carlo(N)
+for cantidad in valores:
 
-    print("\nN:", N)
-    print("PI estimado:", pi)
-    print("Diferencia:", diferencia)
-    print("Tiempo:", tiempo, "segundos")
+    # Ejecutar Monte Carlo
+    pi_mc, error_mc, tiempo_mc = monte_carlo(cantidad)
 
+    # Ejecutar Las Vegas
+    pi_lv, error_lv, tiempo_lv, total_lv = las_vegas(cantidad)
 
-print("\n========== LAS VEGAS ==========")
+    print("\nCANTIDAD:", cantidad)
+    print("-" * 75)
 
-for K in valores_K:
-    pi, diferencia, tiempo, total = las_vegas(K)
+    print("MONTE CARLO")
+    print("PI estimado:", pi_mc)
+    print("Diferencia:", error_mc)
+    print("Tiempo:", tiempo_mc, "segundos")
 
-    print("\nK:", K)
-    print("Puntos dentro:", K)
-    print("Total generado:", total)
-    print("PI estimado:", pi)
-    print("Diferencia:", diferencia)
-    print("Tiempo:", tiempo, "segundos")
+    print("\nLAS VEGAS")
+    print("PI estimado:", pi_lv)
+    print("Diferencia:", error_lv)
+    print("Tiempo:", tiempo_lv, "segundos")
+    print("Total de puntos generados:", total_lv)
+
+    print("\nRESULTADO DE LA COMPARACION")
+
+    if error_mc < error_lv:
+        print("Mayor precision: MONTE CARLO")
+    elif error_lv < error_mc:
+        print("Mayor precision: LAS VEGAS")
+    else:
+        print("Ambos tienen la misma precision")
+
+    if tiempo_mc < tiempo_lv:
+        print("Menor tiempo: MONTE CARLO")
+    elif tiempo_lv < tiempo_mc:
+        print("Menor tiempo: LAS VEGAS")
+    else:
+        print("Ambos tienen el mismo tiempo")
+
+    print("=" * 75)
+
