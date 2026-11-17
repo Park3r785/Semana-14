@@ -1,0 +1,79 @@
+
+import random
+import time
+
+PI_REAL = 3.14159
+
+
+def monte_carlo(N):
+    puntos_dentro = 0
+
+    inicio = time.perf_counter()
+
+    for contador in range(N):
+        x = random.uniform(-0.5, 0.5)
+        y = random.uniform(-0.5, 0.5)
+
+        if x**2 + y**2 <= 0.25:
+            puntos_dentro += 1
+
+    pi_estimado = 4 * puntos_dentro / N
+
+    fin = time.perf_counter()
+
+    diferencia = abs(PI_REAL - pi_estimado)
+    tiempo = fin - inicio
+
+    return pi_estimado, diferencia, tiempo
+
+
+def las_vegas(K):
+    puntos_dentro = 0
+    total_puntos = 0
+
+    inicio = time.perf_counter()
+
+    while puntos_dentro < K:
+        x = random.uniform(-0.5, 0.5)
+        y = random.uniform(-0.5, 0.5)
+
+        total_puntos += 1
+
+        if x**2 + y**2 <= 0.25:
+            puntos_dentro += 1
+
+    pi_estimado = 4 * puntos_dentro / total_puntos
+
+    fin = time.perf_counter()
+
+    diferencia = abs(PI_REAL - pi_estimado)
+    tiempo = fin - inicio
+
+    return pi_estimado, diferencia, tiempo, total_puntos
+
+
+valores_N = [1000, 10000, 100000, 500000]
+valores_K = [1000, 10000, 100000, 500000]
+
+print("\n========== MONTE CARLO ==========")
+
+for N in valores_N:
+    pi, diferencia, tiempo = monte_carlo(N)
+
+    print("\nN:", N)
+    print("PI estimado:", pi)
+    print("Diferencia:", diferencia)
+    print("Tiempo:", tiempo, "segundos")
+
+
+print("\n========== LAS VEGAS ==========")
+
+for K in valores_K:
+    pi, diferencia, tiempo, total = las_vegas(K)
+
+    print("\nK:", K)
+    print("Puntos dentro:", K)
+    print("Total generado:", total)
+    print("PI estimado:", pi)
+    print("Diferencia:", diferencia)
+    print("Tiempo:", tiempo, "segundos")
