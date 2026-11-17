@@ -100,4 +100,3 @@ for cantidad in valores:
         print("Ambos tienen el mismo tiempo")
 
     print("=" * 75)
-
